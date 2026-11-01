@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KinoCaps</title>
+<link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="bar">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"><span>KC</span></div>
+      <div class="titles">
+        <h1>KinoCaps</h1>
+        <p>YouTube captions, redesigned</p>
+      </div>
+    </div>
+    <label class="switch" title="Enable or pause KinoCaps">
+      <input type="checkbox" id="enabled" data-key="enabled" checked aria-label="Enable KinoCaps" />
+      <span class="track"><span class="thumb"></span></span>
+    </label>
+  </header>
+
+  <section class="stage" aria-label="Live caption preview">
+    <span class="stage-meta"><span class="stage-dot"></span>Live preview</span>
+    <button id="replay" class="stage-btn" type="button" title="Replay the caption animation" aria-label="Replay the caption animation">
+      <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v6h-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <span class="preview-pill" id="previewPill"></span>
+  </section>
+
+  <nav class="tabs" role="tablist" aria-label="KinoCaps settings">
+    <button class="tab is-active" id="tabLook" type="button" role="tab" data-tab="look" aria-selected="true" aria-controls="panelLook">Look</button>
+    <button class="tab" id="tabType" type="button" role="tab" data-tab="type" aria-selected="false" aria-controls="panelType" tabindex="-1">Type</button>
+    <button class="tab" id="tabCustom" type="button" role="tab" data-tab="custom" aria-selected="false" aria-controls="panelCustom" tabindex="-1">Custom</button>
+    <span class="tab-glider" aria-hidden="true"></span>
+  </nav>
+
+  <main class="panels" id="panels">
+    <div class="panel is-active" id="panelLook" data-panel="look" role="tabpanel" tabindex="0" aria-labelledby="tabLook">
+      <section class="block">
+        <div class="block-head">
+          <h2>Themes</h2>
+          <span class="tag" id="themeCount"></span>
+        </div>
+        <div class="themes" id="themes"></div>
+      </section>
+
+      <section class="block">
+        <h2>Basics</h2>
+        <div class="row">
+          <label for="size">Size</label>
+          <input type="range" id="size" data-key="size" min="0.7" max="1.6" step="0.05" value="1" />
+          <span class="val" id="sizeVal">100%</span>
+        </div>
+        <div class="row">
+          <label for="bg">Background</label>
+          <input type="range" id="bg" data-key="bg" min="0" max="0.9" step="0.05" value="0.55" />
+          <span class="val" id="bgVal">55%</span>
+        </div>
+        <div class="row">
+          <label for="blur">Glass blur</label>
+          <input type="range" id="blur" data-key="blur" min="0" max="24" step="1" value="14" />
+          <span class="val" id="blurVal">14px</span>
+        </div>
+        <div class="row">
+          <label for="offset">Lift</label>
+          <input type="range" id="offset" data-key="offset" min="8" max="120" step="2" value="28" />
+          <span class="val" id="offsetVal">28px</span>
+        </div>
+      </section>
+
+      <section class="block split">
+        <div id="shapeWrap">
+          <h2>Shape</h2>
+          <div class="seg" data-seg="shape">
+            <button type="button" data-val="pill" class="is-active">Pill</button>
+            <button type="button" data-val="flat">Flat</button>
+          </div>
+        </div>
+        <div>
+          <h2>Entrance</h2>
+          <div class="seg" data-seg="anim">
+            <button type="button" data-val="rise" class="is-active">Rise</button>
+            <button type="button" data-val="fade">Fade</button>
+            <button type="button" data-val="none">Off</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="panel" id="panelType" data-panel="type" role="tabpanel" tabindex="0" aria-labelledby="tabType">
+      <section class="block">
+        <div class="block-head">
+          <h2>Typography</h2>
+          <span class="tag">every theme</span>
+        </div>
+        <div class="row">
+          <label for="font">Font</label>
+          <select id="font" data-key="font"></select>
+          <span></span>
+        </div>
+        <div class="row">
+          <label for="weight">Weight</label>
+          <input type="range" id="weight" data-key="weight" min="400" max="800" step="100" value="600" />
+          <span class="val" id="weightVal">600</span>
+        </div>
+        <div class="row">
+          <label for="italic">Italic</label>
+          <input type="checkbox" id="italic" data-key="italic" />
+          <span class="val" id="italicVal">Off</span>
+        </div>
+        <p class="hint">System fonts only — each option previews in its own stack, so a missing face shows the fallback captions will use.</p>
+      </section>
+
+      <section class="type-specimen" aria-hidden="true">
+        <span class="type-glyph" id="typeGlyph">Aa</span>
+        <span class="type-meta">
+          <span class="type-name" id="typeName">Inter</span>
+          <span class="type-note">Live specimen &middot; every theme</span>
+        </span>
+        <span class="type-glyph type-glyph-small" id="typeGlyphSmall">Rr</span>
+      </section>
+    </div>
+
+    <div class="panel" id="panelCustom" data-panel="custom" role="tabpanel" tabindex="0" aria-labelledby="tabCustom">
+      <p class="notice" id="customNotice">Touching any control here switches to the <strong>Custom</strong> theme.</p>
+
+      <section class="block">
+        <details open>
+          <summary>Colors</summary>
+          <div class="details-body">
+            <div class="row">
+              <label for="text">Text</label>
+              <input type="color" id="text" data-key="text" value="#ffffff" />
+              <span class="val" id="textVal">#FFFFFF</span>
+            </div>
+            <div class="row">
+              <label for="bgc">Pill</label>
+              <input type="color" id="bgc" data-key="bgc" value="#0a0a0e" />
+              <span class="val" id="bgcVal">#0A0A0E</span>
+            </div>
+            <div class="row">
+              <label for="accent">Accent</label>
+              <input type="color" id="accent" data-key="accent" value="#22d3ee" />
+              <span class="val" id="accentVal">#22D3EE</span>
+            </div>
+            <p class="hint">Background uses the opacity slider on the Look tab. Accent drives border and glow.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Typography</summary>
+          <div class="details-body">
+            <div class="row">
+              <label for="lh">Line height</label>
+              <input type="range" id="lh" data-key="lh" min="1" max="2" step="0.05" value="1.45" />
+              <span class="val" id="lhVal">1.45</span>
+            </div>
+            <div class="row">
+              <label for="ls">Tracking</label>
+              <input type="range" id="ls" data-key="ls" min="-0.05" max="0.2" step="0.005" value="0.01" />
+              <span class="val" id="lsVal">0.01em</span>
+            </div>
+            <p class="hint">Family, weight and slant live in <strong>Type</strong> and apply to every theme.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Box &amp; layout</summary>
+          <div class="details-body">
+            <div class="row">
+              <label for="radius">Corners</label>
+              <input type="range" id="radius" data-key="radius" min="0" max="40" step="1" value="18" />
+              <span class="val" id="radiusVal">18px</span>
+            </div>
+            <div class="row">
+              <label for="padY">Padding ↕</label>
+              <input type="range" id="padY" data-key="padY" min="0.1" max="0.8" step="0.05" value="0.35" />
+              <span class="val" id="padYVal">0.35em</span>
+            </div>
+            <div class="row">
+              <label for="padX">Padding ↔</label>
+              <input type="range" id="padX" data-key="padX" min="0.3" max="1.5" step="0.05" value="0.9" />
+              <span class="val" id="padXVal">0.90em</span>
+            </div>
+            <div class="row">
+              <label for="borderW">Border</label>
+              <input type="range" id="borderW" data-key="borderW" min="0" max="4" step="1" value="0" />
+              <span class="val" id="borderWVal">0px</span>
+            </div>
+            <div class="row">
+              <label for="maxW">Max width</label>
+              <input type="range" id="maxW" data-key="maxW" min="40" max="100" step="1" value="86" />
+              <span class="val" id="maxWVal">86%</span>
+            </div>
+            <div class="row">
+              <label for="gap">Line gap</label>
+              <input type="range" id="gap" data-key="gap" min="0" max="24" step="1" value="8" />
+              <span class="val" id="gapVal">8px</span>
+            </div>
+            <div class="sub">
+              <span class="sub-label">Align</span>
+              <div class="seg" data-seg="align">
+                <button type="button" data-val="left">Left</button>
+                <button type="button" data-val="center" class="is-active">Center</button>
+                <button type="button" data-val="right">Right</button>
+              </div>
+            </div>
+            <div class="sub">
+              <span class="sub-label">Position</span>
+              <div class="seg" data-seg="vpos">
+                <button type="button" data-val="bottom" class="is-active">Bottom</button>
+                <button type="button" data-val="top">Top</button>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>Effects</summary>
+          <div class="details-body">
+            <div class="sub">
+              <span class="sub-label">Text edge</span>
+              <div class="seg" data-seg="edge">
+                <button type="button" data-val="none">None</button>
+                <button type="button" data-val="shadow" class="is-active">Shadow</button>
+                <button type="button" data-val="outline">Outline</button>
+              </div>
+            </div>
+            <div class="row">
+              <label for="edgeStrength">Edge strength</label>
+              <input type="range" id="edgeStrength" data-key="edgeStrength" min="0" max="100" step="1" value="70" />
+              <span class="val" id="edgeStrengthVal">70%</span>
+            </div>
+            <div class="row">
+              <label for="glow">Glow</label>
+              <input type="range" id="glow" data-key="glow" min="0" max="40" step="1" value="0" />
+              <span class="val" id="glowVal">0px</span>
+            </div>
+            <div class="row">
+              <label for="speed">Anim speed</label>
+              <input type="range" id="speed" data-key="speed" min="0.5" max="2" step="0.1" value="1" />
+              <span class="val" id="speedVal">1.0×</span>
+            </div>
+            <div class="row">
+              <label for="stagger">Stagger</label>
+              <input type="range" id="stagger" data-key="stagger" min="0" max="80" step="5" value="28" />
+              <span class="val" id="staggerVal">28ms</span>
+            </div>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <button id="reset" class="ghost" type="button">Reset</button>
+    <span id="saved" role="status" aria-live="polite"><span class="saved-dot"></span><span id="savedLabel">Saved</span></span>
+    <button id="openOptions" class="link-btn" type="button">Full editor <span aria-hidden="true">↗</span></button>
+  </footer>
+
+  <script src="../src/shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

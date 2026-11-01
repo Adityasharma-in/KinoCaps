@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>KinoCaps — Full editor</title>
+<link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <div class="gridlines"></div>
+  </div>
+
+  <div class="wrap">
+    <header class="page-head">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>KC</span><i></i><i></i><i></i></div>
+        <div class="brand-text">
+          <p class="eyebrow"><span class="eyebrow-dot"></span>YouTube &middot; Caption studio</p>
+          <h1>Kino<em>Caps</em></h1>
+          <p class="sub">Full editor — every change applies live to open YouTube tabs</p>
+        </div>
+      </div>
+      <div class="head-actions">
+        <div class="onair" id="onair"><span class="onair-dot"></span><span id="onairText">ON AIR</span></div>
+        <label class="switch" title="Enable or pause KinoCaps">
+          <input type="checkbox" id="enabled" data-key="enabled" checked aria-label="Enable KinoCaps" />
+          <span class="track"><span class="thumb"></span></span>
+        </label>
+      </div>
+    </header>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-inner">
+        <span>Glass &mdash; Outline &mdash; Cream &mdash; Neon &mdash; Minimal &mdash; Karaoke &mdash; Aurora &mdash; Sunset &mdash; Royal &mdash; Social &mdash; Broadcast &mdash; Frost &mdash; Cinema &mdash; Prism &mdash; Mono &mdash; Custom &mdash; Word-by-word &mdash;&nbsp;</span>
+        <span>Glass &mdash; Outline &mdash; Cream &mdash; Neon &mdash; Minimal &mdash; Karaoke &mdash; Aurora &mdash; Sunset &mdash; Royal &mdash; Social &mdash; Broadcast &mdash; Frost &mdash; Cinema &mdash; Prism &mdash; Mono &mdash; Custom &mdash; Word-by-word &mdash;&nbsp;</span>
+      </div>
+    </div>
+
+    <main class="layout">
+      <div class="controls">
+        <section class="card themes-card">
+          <div class="card-head">
+            <span class="card-num">01</span>
+            <h2>Theme</h2>
+            <span class="card-rule"></span>
+            <span class="card-tag" id="themeCount">16 looks</span>
+          </div>
+          <div class="themes" id="themes"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <span class="card-num">02</span>
+            <h2>My styles</h2>
+            <span class="card-rule"></span>
+            <span class="card-tag">syncs &times; devices</span>
+          </div>
+          <div class="save-row">
+            <input type="text" id="styleName" maxlength="60" placeholder="Name this style, e.g. Movie night" aria-label="Style name" />
+            <button id="saveStyle" class="btn" type="button">Save style</button>
+          </div>
+          <div id="stylesList" class="styles-list"></div>
+          <p class="hint" id="noStyles">No saved styles yet — dial in a look, name it, hit Save style.</p>
+          <div class="import-row">
+            <button id="exportStyles" class="btn ghost-btn" type="button">Export all (.json)</button>
+            <button id="importBtn" class="btn ghost-btn" type="button">Import&hellip;</button>
+            <input type="file" id="importFile" accept="application/json,.json" hidden />
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <span class="card-num">03</span>
+            <h2>Basics</h2>
+            <span class="card-rule"></span>
+            <span class="card-tag">applies to all</span>
+          </div>
+          <div class="row">
+            <label for="size">Size</label>
+            <input type="range" id="size" data-key="size" min="0.7" max="1.6" step="0.05" value="1" />
+            <span class="val" id="sizeVal">100%</span>
+          </div>
+          <div class="row">
+            <label for="bg">Background</label>
+            <input type="range" id="bg" data-key="bg" min="0" max="0.9" step="0.05" value="0.55" />
+            <span class="val" id="bgVal">55%</span>
+          </div>
+          <div class="row">
+            <label for="blur">Glass blur</label>
+            <input type="range" id="blur" data-key="blur" min="0" max="24" step="1" value="14" />
+            <span class="val" id="blurVal">14px</span>
+          </div>
+          <div class="row">
+            <label for="offset">Lift</label>
+            <input type="range" id="offset" data-key="offset" min="8" max="120" step="2" value="28" />
+            <span class="val" id="offsetVal">28px</span>
+          </div>
+          <div class="two-col">
+            <div id="shapeWrap">
+              <h2 class="mini-h">Shape</h2>
+              <div class="seg" data-seg="shape">
+                <button type="button" data-val="pill">Pill</button>
+                <button type="button" data-val="flat">Flat</button>
+              </div>
+            </div>
+            <div>
+              <h2 class="mini-h">Entrance</h2>
+              <div class="seg" data-seg="anim">
+                <button type="button" data-val="rise">Rise</button>
+                <button type="button" data-val="fade">Fade</button>
+                <button type="button" data-val="none">Off</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <span class="card-num">04</span>
+            <h2>Typography</h2>
+            <span class="card-rule"></span>
+            <span class="card-tag">applies to all</span>
+          </div>
+          <div class="row">
+            <label for="font">Font</label>
+            <select id="font" data-key="font"></select>
+            <span></span>
+          </div>
+          <div class="row">
+            <label for="weight">Weight</label>
+            <input type="range" id="weight" data-key="weight" min="400" max="800" step="100" value="600" />
+            <span class="val" id="weightVal">600</span>
+          </div>
+          <div class="row">
+            <label for="italic">Italic</label>
+            <input type="checkbox" id="italic" data-key="italic" />
+            <span class="val" id="italicVal">Off</span>
+          </div>
+          <p class="hint tight">System fonts only — nothing is downloaded. Each option previews in its own stack, so a face that isn&rsquo;t installed shows the fallback your captions will actually use.</p>
+        </section>
+
+        <section class="card lab-card">
+          <div class="card-head">
+            <span class="card-num">05</span>
+            <h2>Custom style</h2>
+            <span class="card-rule"></span>
+            <span class="card-tag">auto-switches to Custom</span>
+          </div>
+          <p class="hint tight">Editing anything here switches you to the Custom theme automatically.</p>
+
+          <details open>
+            <summary><span class="sum-ico" aria-hidden="true"></span>Colors</summary>
+            <div class="details-body">
+              <div class="row">
+                <label for="text">Text</label>
+                <input type="color" id="text" data-key="text" value="#ffffff" />
+                <span class="val" id="textVal">#FFFFFF</span>
+              </div>
+              <div class="row">
+                <label for="bgc">Pill</label>
+                <input type="color" id="bgc" data-key="bgc" value="#0a0a0e" />
+                <span class="val" id="bgcVal">#0A0A0E</span>
+              </div>
+              <div class="row">
+                <label for="accent">Accent</label>
+                <input type="color" id="accent" data-key="accent" value="#22d3ee" />
+                <span class="val" id="accentVal">#22D3EE</span>
+              </div>
+              <p class="hint">Pill opacity uses the Background slider above. Accent drives the border + glow.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary><span class="sum-ico" aria-hidden="true"></span>Typography</summary>
+            <div class="details-body">
+              <div class="row">
+                <label for="lh">Line height</label>
+                <input type="range" id="lh" data-key="lh" min="1" max="2" step="0.05" value="1.45" />
+                <span class="val" id="lhVal">1.45</span>
+              </div>
+              <div class="row">
+                <label for="ls">Tracking</label>
+                <input type="range" id="ls" data-key="ls" min="-0.05" max="0.2" step="0.005" value="0.01" />
+                <span class="val" id="lsVal">0.01em</span>
+              </div>
+              <p class="hint">Family, weight and slant live in <strong>Typography</strong> and apply to every theme.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary><span class="sum-ico" aria-hidden="true"></span>Box &amp; layout</summary>
+            <div class="details-body">
+              <div class="row">
+                <label for="radius">Corners</label>
+                <input type="range" id="radius" data-key="radius" min="0" max="40" step="1" value="18" />
+                <span class="val" id="radiusVal">18px</span>
+              </div>
+              <div class="row">
+                <label for="padY">Padding ↕</label>
+                <input type="range" id="padY" data-key="padY" min="0.1" max="0.8" step="0.05" value="0.35" />
+                <span class="val" id="padYVal">0.35em</span>
+              </div>
+              <div class="row">
+                <label for="padX">Padding ↔</label>
+                <input type="range" id="padX" data-key="padX" min="0.3" max="1.5" step="0.05" value="0.9" />
+                <span class="val" id="padXVal">0.90em</span>
+              </div>
+              <div class="row">
+                <label for="borderW">Border</label>
+                <input type="range" id="borderW" data-key="borderW" min="0" max="4" step="1" value="0" />
+                <span class="val" id="borderWVal">0px</span>
+              </div>
+              <div class="row">
+                <label for="maxW">Max width</label>
+                <input type="range" id="maxW" data-key="maxW" min="40" max="100" step="1" value="86" />
+                <span class="val" id="maxWVal">86%</span>
+              </div>
+              <div class="row">
+                <label for="gap">Line gap</label>
+                <input type="range" id="gap" data-key="gap" min="0" max="24" step="1" value="8" />
+                <span class="val" id="gapVal">8px</span>
+              </div>
+              <div class="sub">
+                <span class="sub-label">Align</span>
+                <div class="seg" data-seg="align">
+                  <button type="button" data-val="left">Left</button>
+                  <button type="button" data-val="center">Center</button>
+                  <button type="button" data-val="right">Right</button>
+                </div>
+              </div>
+              <div class="sub">
+                <span class="sub-label">Position</span>
+                <div class="seg" data-seg="vpos">
+                  <button type="button" data-val="bottom">Bottom</button>
+                  <button type="button" data-val="top">Top</button>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary><span class="sum-ico" aria-hidden="true"></span>Effects</summary>
+            <div class="details-body">
+              <div class="sub">
+                <span class="sub-label">Text edge</span>
+                <div class="seg" data-seg="edge">
+                  <button type="button" data-val="none">None</button>
+                  <button type="button" data-val="shadow">Shadow</button>
+                  <button type="button" data-val="outline">Outline</button>
+                </div>
+              </div>
+              <div class="row">
+                <label for="edgeStrength">Edge strength</label>
+                <input type="range" id="edgeStrength" data-key="edgeStrength" min="0" max="100" step="1" value="70" />
+                <span class="val" id="edgeStrengthVal">70%</span>
+              </div>
+              <div class="row">
+                <label for="glow">Glow</label>
+                <input type="range" id="glow" data-key="glow" min="0" max="40" step="1" value="0" />
+                <span class="val" id="glowVal">0px</span>
+              </div>
+              <div class="row">
+                <label for="speed">Anim speed</label>
+                <input type="range" id="speed" data-key="speed" min="0.5" max="2" step="0.1" value="1" />
+                <span class="val" id="speedVal">1.0×</span>
+              </div>
+              <div class="row">
+                <label for="stagger">Stagger</label>
+                <input type="range" id="stagger" data-key="stagger" min="0" max="80" step="5" value="28" />
+                <span class="val" id="staggerVal">28ms</span>
+              </div>
+            </div>
+          </details>
+        </section>
+
+        <button id="reset" class="btn danger-btn" type="button">Reset everything to defaults</button>
+        <p class="foot-note">Autosaved &middot; synced via <span class="mono">chrome.storage.sync</span> &middot; <span class="mono">Alt+Shift+C</span> toggles captions</p>
+      </div>
+
+      <aside class="preview-col">
+        <section class="card stage-card">
+          <div class="card-head">
+            <span class="card-num">◉</span>
+            <h2>Screening room</h2>
+            <span class="card-rule"></span>
+            <span class="card-tag">live</span>
+          </div>
+          <div class="stage" id="stage" aria-hidden="true">
+            <div class="stage-top">
+              <span class="stage-dot"></span>
+              <span class="stage-title">Sample video — captions styled live</span>
+              <span class="stage-live">4K &middot; CC</span>
+            </div>
+            <div class="stage-captions" id="stageCaptions">
+              <span class="cap-line" id="capLine1" data-text="This is how captions look now"></span>
+              <span class="cap-line" id="capLine2" data-text="Second line shows your line gap"></span>
+            </div>
+            <div class="stage-controls">
+              <span class="play">▶</span>
+              <span class="progress"><span class="bar"></span><span class="knob"></span></span>
+              <span class="time">01:12 / 04:20</span>
+              <span class="cc-badge">CC</span>
+            </div>
+          </div>
+          <div class="preview-inputs">
+            <label class="script-line"><span class="script-num">L1</span><input type="text" id="prevLine1" maxlength="120" value="This is how captions look now" aria-label="Preview line 1" /></label>
+            <label class="script-line"><span class="script-num">L2</span><input type="text" id="prevLine2" maxlength="120" value="Second line shows your line gap" aria-label="Preview line 2" /></label>
+          </div>
+          <div class="stage-actions">
+            <button id="replay" class="btn ghost-btn" type="button">↻ Replay animation</button>
+            <a class="btn ghost-btn link" href="https://www.youtube.com" target="_blank" rel="noopener">Test on YouTube ↗</a>
+          </div>
+          <p class="hint">Every change saves automatically and applies live to any open YouTube tab.</p>
+        </section>
+
+        <section class="card tip-card">
+          <div class="card-head">
+            <span class="card-num">✎</span>
+            <h2>Director&rsquo;s notes</h2>
+            <span class="card-rule"></span>
+          </div>
+          <ul class="tips">
+            <li><strong>Cinema</strong> is the quietest look — a true letterbox bar, no blur.</li>
+            <li><strong>Prism</strong> adds a gradient hairline without touching the text.</li>
+            <li><strong>Karaoke</strong> shines brightest on dark scenes.</li>
+            <li>Low <strong>Background</strong> + high <strong>Blur</strong> = floating glass.</li>
+            <li><strong>Outline</strong> stays readable over bright video.</li>
+            <li><strong>Social</strong> pops like TikTok auto-captions — try it with Fade.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="../src/shared.js"></script>
+  <script src="options.js"></script>
+  <script src="options-decor.js"></script>
+</body>
+</html>
